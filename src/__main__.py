@@ -20,18 +20,16 @@ extract.add_argument(
     help="The model of interest (e.g. 'model.analytics.foo').",
 )
 args = parser.parse_args()
-_FILE_NAME = args.from_file
-_MODEL_NAME = args.model
 
 # Define patterns for regex.
 PATTERN_NODE_NAME = r"model\.[^\s]+"
 PATTERN_THREAD_NUMBER = r"Thread-(\d+)"
 
 
-def build_node_index(file_name: str, model_name: str) -> dict:
+def build_node_index(file_name: str) -> dict:
     """Build a dict of nodes, their thread number, and the first and last log line."""
     all_nodes = {}
-    with open(_FILE_NAME, "r") as f:
+    with open(file_name, "r") as f:
         for line_num, line in enumerate(f):
             if "Began running node" in line:
                 # Extract name of node.
@@ -49,9 +47,9 @@ def build_node_index(file_name: str, model_name: str) -> dict:
     return all_nodes
 
 
-def write_model_logs(all_node_index, file_name, model_name):
+def write_model_logs(all_node_index: dict, file_name: str, model_name: str) -> None:
     """Write a log file with logs specific to the model of interest."""
-    with open(_FILE_NAME, "r") as f:
+    with open(file_name, "r") as f:
         node_of_interest = all_node_index[model_name]
         # Extract starting from the first line to the last line.
         lines = f.readlines()[
@@ -80,7 +78,7 @@ def main():
             print(
                 f"File '{_FILE_NAME}' found. Finding logs lines for model '{_MODEL_NAME}'."
             )
-            all_node_index = build_node_index(_FILE_NAME, _MODEL_NAME)
+            all_node_index = build_node_index(_FILE_NAME)
             if all_node_index.get(_MODEL_NAME):
                 write_model_logs(all_node_index, _FILE_NAME, _MODEL_NAME)
             else:
@@ -88,4 +86,4 @@ def main():
         else:
             print(f"File '{_FILE_NAME}' not found. Please confirm that the file exist.")
     else:
-        print("See help by running 'dd -h'.")
+        print("See help by running 'ddbt -h'.")

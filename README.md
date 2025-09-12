@@ -1,20 +1,20 @@
-# dd
+# ddbt
 
-Some dbt debugging (dd) tools.
+Some tools for debugging dbt (ddbt).
 
 ## Setup/Installation
 
 Clone and install into a python virtual env:
 
 ```sh
-$ git clone https://github.com/jeremyyeo/dd.git
-$ cd dd
+$ git clone https://github.com/jeremyyeo/ddbt.git
+$ cd ddbt
 $ python -m venv venv
 $ source venv/bin/activate
 $ pip install .
-$ dd --help
+$ ddbt --help
 
-usage: dd [-h] {extract} ...
+usage: ddbt [-h] {extract} ...
 
 positional arguments:
   {extract}
@@ -29,7 +29,7 @@ options:
 Extract model specific log lines from debug logs.
 
 ```sh
-$ dd extract --model model.analytics.foo --from-file debug.log
+$ ddbt extract --model model.analytics.foo --from-file debug.log
 ```
 
 Note that the debug logs normally contain multiple lines in a single thread for SQL queries - for example:
