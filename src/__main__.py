@@ -14,10 +14,10 @@ extract.add_argument(
     help="The full path to the debug logs file (e.g. 'debug.log').",
 )
 extract.add_argument(
-    "-m",
-    "--model",
+    "-n",
+    "--node",
     required=True,
-    help="The model of interest (e.g. 'model.analytics.foo').",
+    help="The node of interest (e.g. 'model.analytics.foo').",
 )
 args = parser.parse_args()
 
@@ -70,7 +70,7 @@ def write_model_logs(all_node_index: dict, file_name: str, model_name: str) -> N
 def main():
     if args.command == "extract":
         _FILE_NAME = args.from_file
-        _MODEL_NAME = args.model
+        _MODEL_NAME = args.node
         # Check file exist.
         import os.path
 

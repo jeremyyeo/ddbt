@@ -29,7 +29,7 @@ options:
 Extract model specific log lines from debug logs.
 
 ```sh
-$ ddbt extract --model model.analytics.foo --from-file debug.log
+$ ddbt extract --node model.analytics.foo --from-file debug.log
 ```
 
 Note that the debug logs normally contain multiple lines in a single thread for SQL queries - for example:
