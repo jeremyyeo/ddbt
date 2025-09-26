@@ -55,15 +55,31 @@ def write_model_logs(all_node_index: dict, file_name: str, model_name: str) -> N
         lines = f.readlines()[
             node_of_interest["first_line_number"] : node_of_interest["last_line_number"]
         ]
-        # Remove unrelated nodes.
-        lines = [
-            line
-            for line in lines
-            if (f"Thread-{node_of_interest["thread_number"]}" in line and line.strip())
-        ]
+        filtered_lines = []
+        keep_mode = False
+        node_thread = f"Thread-{node_of_interest['thread_number']}"
+
+        for line in lines:
+            thread_match = re.search(PATTERN_THREAD_NUMBER, line)
+
+            if node_thread in line:
+                # Found a line for the node’s thread → keep it
+                filtered_lines.append(line)
+                keep_mode = True
+            elif thread_match:
+                # New thread line
+                if node_thread not in line:
+                    # Different thread → stop keeping continuations
+                    keep_mode = False
+            else:
+                # Continuation (no thread number)
+                if keep_mode:
+                    filtered_lines.append(line)
+
         model_specific_log_file_name = f"{file_name}_{model_name}.log"
         with open(model_specific_log_file_name, "w") as f_write:
-            f_write.writelines(lines)
+            f_write.writelines(filtered_lines)
+        
         print(f"Model logs written to:\n{model_specific_log_file_name}")
 
 
