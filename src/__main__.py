@@ -22,7 +22,7 @@ extract.add_argument(
 args = parser.parse_args()
 
 # Define patterns for regex.
-PATTERN_NODE_NAME = r"model\.[^\s]+"
+PATTERN_NODE_NAME = r'[a-zA-Z_]+\.[^\s"]+'
 PATTERN_THREAD_NUMBER = r"Thread-(\d+)"
 
 
